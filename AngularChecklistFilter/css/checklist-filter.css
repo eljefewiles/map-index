@@ -1,0 +1,29 @@
+.toggleChecklist{
+    border-radius: 3px;
+    border: 1px solid #c4e3f3;
+    background: #EFEFEF;
+    padding: 5px;
+    margin: 0 6px;
+    cursor: pointer;
+    position: relative;
+}
+
+.checklist{
+    width: 230px;
+    position:absolute;
+    top: 35px;
+    left: 0;
+    z-index: 999;
+    border: 1px solid #c4e3f3;
+    background: #fff;
+    border-radius: 3px;
+    height: 300px;
+    overflow-y:scroll;
+}
+.checklist label {
+    border: 0 !important;
+    cursor: pointer;
+}
+.checklist label:hover {
+    background: #c4e3f3;
+}

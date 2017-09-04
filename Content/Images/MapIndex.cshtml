@@ -1,0 +1,256 @@
+﻿<style type="text/css">
+    /*.MarkerClass{
+        display:block;
+    }*/ .map-icon-item{
+          width:100px !important;
+      }
+      .map-icon > label{
+          padding-left:5px !important;
+      }
+     
+</style>
+
+<input style="display:none;" id="completDiv" />
+
+<section id="content">
+
+    <div class="container-fluid" style="margin-top:10px;">
+        <div class="outer-border">
+            <div id="results-container" class="row">
+                <div class="result-col main-container">
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-offset-3 col-xs-9 search-block">
+                                @Html.Partial("_MapOutputBtns", null)
+                                <div class="padding">
+                                    <div class="row">
+                                        <div class="col-xs-1" style="min-width: 120px;">
+                                            <table style="font-size:19px;color:green;">
+                                                <tr>
+                                                    <th>
+                                                        Results:
+                                                    </th>
+                                                    <td>
+                                                        <span style="margin-left:4px !important;" data-ng-bind="FormatCurrency(FilterInterface.ChecklistSideData.length)" id="resultsCounter">
+
+                                                        </span>
+                                                     
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div class="inline results">
+                                                <span id="filterResultCounts">
+                                                    <strong></strong>
+                                                    <span class="ng-hide">
+                                                        <strong>Sort by</strong>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-4 media-btn right pull-right">
+                                            @Html.Partial("_DownloadShapeButttonsRefresh", null)
+                                            <!-- export to pdf button-->
+                                        </div><!-- /.media-btn -->
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-xs-12">
+
+                                            <div>
+                                                <div class="footer filters-wrapper" style="">
+                                                    <div class="filters pull-left">
+                                                        <span style="font-size:10px !important;">{{FacetSelectHtml}}</span>
+                                                        <div></div>
+                                                    </div>
+                                                    <div class="filters-button-group btn-group other">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="overflow-y:hidden !important;" class="">
+                                        <div id="tabContentOutput" class="tab-content">
+                                            @Html.Partial("_MapTab", null)
+                                            @Html.Partial("_SpreadTab", null)
+                                            @Html.Partial("_GridTab", null)
+                                            @Html.Partial("_TableTab", null)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="tabsetFilters" class="filter-col tabs-section">
+                    <!-- Nav tabs -->
+                    @Html.Partial("_LeftSideFilters", null)
+                    <div class="tab-content">
+                        @Html.Partial("_CompanyTabFilter", null)
+                        @Html.Partial("_CountiesTabFilter", null)
+                        @Html.Partial("_DealTypeTabFilter", null)
+                        @Html.Partial("_RegionTabFilter", null)
+                        @Html.Partial("_PlayTabFilter", null)
+                        @Html.Partial("_DealDataTabFilter", null)
+                        @Html.Partial("_KeywordTabFilter", null)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div  class="modal fade" id="maModal" tabindex="-1" role="dialog" aria-labelledby="maModalLabel">
+        <div  class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#69b145 !important;color:white !important;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="maModalLabel">
+                    <span data-ng-if="FilterInterface.DbTarget == 'DFSTAB'">
+                        DFS Deals
+                    </span>
+                        <span data-ng-if="FilterInterface.DbTarget == 'MATAB'">
+                            MA Deals
+                        </span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table style="font-size:11px !important;" data-ng-if="FilterInterface.DbTarget == 'MATAB'" id="maTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    
+                                </th>
+                                <th>
+                                    Announced
+                                </th>
+                                <th>
+                                    Buyers
+                                </th>
+                                <th>
+                                    Sellers
+                                </th>
+                                <th>
+                                    Value ($MM)
+                                </th>
+
+                            </tr>
+                        </thead>
+                       
+                        <tbody>
+                            <tr data-ng-repeat="item in TableData.TableSet">
+                                <td>
+                                    <div style="height:20px;float:right; width:20px;background-color:{{item.HexColor}}"></div>
+                                </td>
+                                <td>
+                                    <span data-ng-bind="item.Date_Announced | date:'MM/dd/yyyy'"></span>
+                                </td>
+                                <td>
+                                    <span data-ng-bind="item.Buyers"></span>
+                                </td>
+                                <td>
+                                    <span data-ng-bind="item.Sellers"></span>
+                                </td>
+                                <td>
+                                    <span data-ng-bind="FormatCurrency2(item.Value___MM_)"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                    <table data-ng-if="FilterInterface.DbTarget == 'PORTFOLIOTAB'" id="maTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Company
+                                </th>
+                                <th>
+                                    Play
+                                </th>
+                                <th>
+                                    Counties
+                                </th>
+                                <th>
+                                    States
+                                </th>
+
+                            </tr>
+                        </thead>
+                       <tbody>
+                           <tr data-ng-repeat="item in TableData.TableSet">
+                               <td>
+                                   <span data-ng-bind="item.CompanyName"></span>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.US_Play"></span>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.Counties"></span>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.States"></span>
+                               </td>
+                           </tr>
+                       </tbody>
+                       
+                    </table>
+                    <table data-ng-if="FilterInterface.DbTarget == 'DFSTAB'" id="maTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Listing Date
+                                </th>
+                                <th>
+                                    Agent/Broker
+                                </th>
+                                <th>
+                                    Region
+                                </th>
+                                <th>
+                                    Play
+                                </th>
+
+                            </tr>
+                        </thead>
+                       <tbody>
+                           <tr data-ng-repeat="item in TableData.TableSet">
+                               <td>
+                                   <div style="height:20px;float:right; width:20px;background-color:{{item.HexColor}}"></div>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.Listing_Date | date:'MM/dd/yyyy'"></span>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.Agent_Broker"></span>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.US_Region"></span>
+                               </td>
+                               <td>
+                                   <span data-ng-bind="item.US_Play"></span>
+                               </td>
+                           </tr>
+                       </tbody>
+                        
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"
+                            ng-csv="FilterInterface.ExportTableSet" csv-header="FilterInterface.ExportHeaders" filename="DataSet.csv" field-separator="{{separator}}" decimal-separator="{{decimalSeparator}}">
+                        Export to CSV
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
